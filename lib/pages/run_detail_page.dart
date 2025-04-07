@@ -291,10 +291,10 @@ class _RunDetailPageState extends State<RunDetailPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: duo.areInParty
-                            ? BorderSide(color: pokemonBlue, width: 2)
+                            ? BorderSide(color: pokemonBlue, width: 4)
                             : BorderSide(
                                 color: duo.areAlive ? runWon : runLost,
-                                width: 2),
+                                width: 4),
                       ),
                     ),
                   );
