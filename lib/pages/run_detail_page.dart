@@ -250,12 +250,29 @@ class _RunDetailPageState extends State<RunDetailPage> {
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                     child: ListTile(
-                      leading: Checkbox(
-                        value: duo.areAlive,
-                        onChanged: (bool? value) {
-                          setState(() => duo.areAlive = value ?? true);
-                          _saveRun();
-                        },
+                      leading: SizedBox(
+                        width: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (duo.areInParty)
+                              Padding(
+                                padding: EdgeInsets.only(right: 4),
+                                child: Image.asset('assets/pokeball-1.png',
+                                    width: 24, height: 24),
+                              ),
+                            Checkbox(
+                              value: duo.areAlive,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  duo.areAlive = value ?? true;
+                                });
+                                _saveRun();
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -290,11 +307,10 @@ class _RunDetailPageState extends State<RunDetailPage> {
                       tileColor: duo.areAlive ? runWon : runLost,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
-                        side: duo.areInParty
-                            ? BorderSide(color: pokemonBlue, width: 4)
-                            : BorderSide(
-                                color: duo.areAlive ? runWon : runLost,
-                                width: 4),
+                        side: BorderSide(
+                          color: duo.areAlive ? runWon : runLost,
+                          width: 4,
+                        ),
                       ),
                     ),
                   );
