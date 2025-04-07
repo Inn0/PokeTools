@@ -24,5 +24,5 @@ A tool to track Pokemon soullink nuzlocke runs.
 
 ### Chores
 
--   [ ] Write a README.
--   [ ] Upload to GitHub.
+-   [x] Write a README.
+-   [x] Upload to GitHub.
