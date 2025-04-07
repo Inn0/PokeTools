@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:poke_tools/components/utils/string_utils.dart';
 import 'package:poke_tools/models/nuzlocke_run.dart';
 import 'package:poke_tools/models/pokemon_duo.dart';
@@ -87,7 +88,9 @@ class _RunDetailPageState extends State<RunDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.run.name)),
+      appBar: AppBar(
+        title: Text(widget.run.name),
+      ),
       body: Container(
         color: widget.run.isWon
             ? runWon
@@ -98,135 +101,142 @@ class _RunDetailPageState extends State<RunDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: Column(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text.rich(
-                        TextSpan(
-                          text: 'Game: ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TextSpan(
-                              text: widget.run.game.displayName,
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 18,
+                            Text.rich(
+                              TextSpan(
+                                text: 'Game: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: widget.run.game.displayName,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
                               ),
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text.rich(
+                                      TextSpan(
+                                        text: 'Player 1: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: widget.run.player1,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text.rich(
+                                      TextSpan(
+                                        text: 'Player 2: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: widget.run.player2,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () => _showEditPlayerNamesDialog(),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Divider(
+                              color: Colors.white,
+                              thickness: 1,
+                              indent: 0,
+                              endIndent: 0,
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text.rich(
-                                TextSpan(
-                                  text: 'Player 1: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: widget.run.player1,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Finished:',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
                               ),
-                              Text.rich(
-                                TextSpan(
-                                  text: 'Player 2: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: widget.run.player2,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () => _showEditPlayerNamesDialog(),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Divider(
-                        color: Colors.white,
-                        thickness: 1,
-                        indent: 0,
-                        endIndent: 0,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Finished:',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
+                            ),
+                            Switch(
+                              value: widget.run.isWon,
+                              activeColor: Colors.white,
+                              activeTrackColor: pokemonRed,
+                              onChanged: (bool newValue) {
+                                setState(() {
+                                  widget.run.isWon = newValue;
+                                });
+                                _saveRun();
+                              },
+                            ),
+                          ],
                         ),
-                      ),
-                      Switch(
-                        value: widget.run.isWon,
-                        activeColor: Colors.white,
-                        activeTrackColor: pokemonRed,
-                        onChanged: (bool newValue) {
-                          setState(() {
-                            widget.run.isWon = newValue;
-                          });
-                          _saveRun();
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Pokemon List (${widget.run.player1} - ${widget.run.player2})',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      ],
                     ),
                   ),
-                  Text(
-                    '${widget.run.pokemons.where((duo) => duo.areAlive).length}/${widget.run.pokemons.length} alive',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Pokemon List (${widget.run.player1} - ${widget.run.player2})',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          '${widget.run.pokemons.where((duo) => duo.areAlive).length}/${widget.run.pokemons.length} alive',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -238,7 +248,7 @@ class _RunDetailPageState extends State<RunDetailPage> {
                 itemBuilder: (context, index) {
                   var duo = widget.run.pokemons[index];
                   return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                     child: ListTile(
                       leading: Checkbox(
                         value: duo.areAlive,

@@ -20,7 +20,8 @@ A tool to track Pokemon soullink nuzlocke runs.
 ### Bugs
 
 -   [x] Fix route selection dropdown not showing appropriate selected area.
--   [ ] Fix background color of elements that represent runs not updating
+-   [ ] Fix background color of elements that represent runs not updating.
+-   [ ] Fix appbar color changing when scrolling pokemon list.
 
 ### Chores
 
