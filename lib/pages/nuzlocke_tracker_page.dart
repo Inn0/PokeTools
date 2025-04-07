@@ -149,7 +149,13 @@ class _NuzlockeTrackerPageState extends State<NuzlockeTrackerPage> {
                       run.name,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text(run.game.displayName),
+                    subtitle: Row(
+                      children: [
+                        Text(run.game.displayName),
+                        Text(" - "),
+                        Text('${run.player1} & ${run.player2}'),
+                      ],
+                    ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () => _deleteRun(index),

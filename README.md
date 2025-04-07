@@ -15,7 +15,7 @@ A tool to track Pokemon soullink nuzlocke runs.
 -   [x] Add a toggle to the list elements that represent pokemon duo's to display if they are in the party or not.
 -   [ ] Add autofill-like behavior when adding a Pokemon.
 -   [x] Static encounter toggle instead of route.
--   [ ] Add player names to list elements that represent runs.
+-   [x] Add player names to list elements that represent runs.
 
 ### Bugs
 
