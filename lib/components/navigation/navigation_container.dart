@@ -26,9 +26,7 @@ class NavigationContainerState extends State<NavigationContainer> {
     _navigatorKey.currentState
         ?.pushNamedAndRemoveUntil(route, (route) => false);
 
-    if (!isDesktop) {
-      Navigator.of(context, rootNavigator: true).pop();
-    }
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   Widget _buildSidebar() {
@@ -79,15 +77,14 @@ class NavigationContainerState extends State<NavigationContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isDesktop
-          ? null
-          : AppBar(
-              title: Text(_selectedRoute == HOME_PAGE_ROUTE
-                  ? HOME_PAGE
-                  : NUZLOCKE_TRACKER_PAGE)),
+      appBar: AppBar(
+        title: Text(_selectedRoute == HOME_PAGE_ROUTE
+            ? HOME_PAGE
+            : NUZLOCKE_TRACKER_PAGE),
+        backgroundColor: pokemonRed,
+      ),
       body: Row(
         children: [
-          if (isDesktop) SizedBox(width: 250, child: _buildSidebar()),
           Expanded(
             child: Navigator(
               key: _navigatorKey,
@@ -107,7 +104,8 @@ class NavigationContainerState extends State<NavigationContainer> {
           ),
         ],
       ),
-      drawer: isDesktop ? null : Drawer(child: _buildSidebar()),
+      drawer: Drawer(child: _buildSidebar()),
+      extendBodyBehindAppBar: false,
     );
   }
 

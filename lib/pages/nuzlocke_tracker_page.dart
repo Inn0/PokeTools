@@ -122,6 +122,7 @@ class _NuzlockeTrackerPageState extends State<NuzlockeTrackerPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nuzlocke Runs'),
+        backgroundColor: pokemonRed,
       ),
       body: runs.isEmpty
           ? const Center(child: Text('No runs available.'))
@@ -160,17 +161,19 @@ class _NuzlockeTrackerPageState extends State<NuzlockeTrackerPage> {
                       icon: const Icon(Icons.delete),
                       onPressed: () => _deleteRun(index),
                     ),
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => RunDetailPage(run: run),
                         ),
                       );
+                      setState(() {});
                     },
                   ),
                 );
               },
+              padding: EdgeInsets.only(top: 8),
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddRunDialog,
