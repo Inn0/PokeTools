@@ -27,7 +27,7 @@ class _NuzlockeTrackerPageState extends State<NuzlockeTrackerPage> {
   Future<void> _loadRuns() async {
     final loadedRuns = await repository.loadRuns();
     setState(() {
-      runs = loadedRuns;
+      runs = loadedRuns.reversed.toList();
     });
   }
 

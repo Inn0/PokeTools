@@ -26,6 +26,18 @@ class _RunDetailPageState extends State<RunDetailPage> {
     await runRepository.saveRun(widget.run);
   }
 
+  void _sortPokemonDuos() {
+    widget.run.pokemons.sort((a, b) {
+      if (a.areInParty != b.areInParty) {
+        return b.areInParty ? 1 : -1;
+      }
+      if (a.areAlive != b.areAlive) {
+        return b.areAlive ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+
   void _deletePokemonDuo(int index) {
     showDialog(
       context: context,
@@ -208,6 +220,7 @@ class _RunDetailPageState extends State<RunDetailPage> {
                               onChanged: (bool newValue) {
                                 setState(() {
                                   widget.run.isWon = newValue;
+                                  _sortPokemonDuos();
                                 });
                                 _saveRun();
                               },
@@ -250,29 +263,26 @@ class _RunDetailPageState extends State<RunDetailPage> {
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                     child: ListTile(
-                      leading: SizedBox(
-                        width: 60,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (duo.areInParty)
-                              Padding(
-                                padding: EdgeInsets.only(right: 4),
-                                child: Image.asset('assets/pokeball-1.png',
-                                    width: 24, height: 24),
-                              ),
-                            Checkbox(
-                              value: duo.areAlive,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  duo.areAlive = value ?? true;
-                                });
-                                _saveRun();
-                              },
+                      leading: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (duo.areInParty)
+                            Padding(
+                              padding: EdgeInsets.only(right: 4),
+                              child: Image.asset('assets/pokeball-1.png',
+                                  width: 24, height: 24),
                             ),
-                          ],
-                        ),
+                          Checkbox(
+                            value: duo.areAlive,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                duo.areAlive = value ?? true;
+                                _sortPokemonDuos();
+                              });
+                              _saveRun();
+                            },
+                          ),
+                        ],
                       ),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -291,6 +301,7 @@ class _RunDetailPageState extends State<RunDetailPage> {
                             onChanged: (bool value) {
                               setState(() {
                                 duo.areInParty = value;
+                                _sortPokemonDuos();
                               });
                               _saveRun();
                             },
@@ -337,6 +348,7 @@ class _RunDetailPageState extends State<RunDetailPage> {
               widget.run.pokemons.add(result);
             });
             _saveRun();
+            _sortPokemonDuos();
           }
         },
         foregroundColor: Colors.white,
