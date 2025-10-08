@@ -24,7 +24,7 @@ class PokeTools extends StatelessWidget {
         '/$NUZLOCKE_TRACKER_PAGE_ROUTE': (context) =>
             const NuzlockeTrackerPage(),
       },
-      home: const NavigationContainer(), // Set NavigationContainer as the home
+      home: const NavigationContainer(),
     );
   }
 }

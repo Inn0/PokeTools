@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:poke_tools/constants.dart';
 import 'package:poke_tools/pages/home_page.dart';
+import 'package:poke_tools/pages/levelcaps_page.dart';
 import 'package:poke_tools/pages/locations_page.dart';
 import 'package:poke_tools/pages/nuzlocke_tracker_page.dart';
 import 'package:poke_tools/theme.dart';
@@ -54,6 +55,7 @@ class NavigationContainerState extends State<NavigationContainer> {
           _buildMenuItem(HOME_PAGE, HOME_PAGE_ROUTE),
           _buildMenuItem(NUZLOCKE_TRACKER_PAGE, NUZLOCKE_TRACKER_PAGE_ROUTE),
           _buildMenuItem(LOCATIONS_PAGE, LOCATIONS_PAGE_ROUTE),
+          _buildMenuItem(LEVELCAPS_PAGE, LEVELCAPS_PAGE_ROUTE),
         ],
       ),
     );
@@ -96,6 +98,8 @@ class NavigationContainerState extends State<NavigationContainer> {
                     return _buildPageRoute(const NuzlockeTrackerPage());
                   case LOCATIONS_PAGE_ROUTE:
                     return _buildPageRoute(const LocationsPage());
+                  case LEVELCAPS_PAGE_ROUTE:
+                    return _buildPageRoute(const LevelCapsPage());
                   default:
                     return _buildPageRoute(const HomePage());
                 }

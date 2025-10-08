@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:poke_tools/components/utils/string_utils.dart';
 import 'package:poke_tools/models/nuzlocke_run.dart';
 import 'package:poke_tools/models/pokemon_duo.dart';
 import 'package:poke_tools/components/dialogs/confirmation_delete_dialog.dart';
 import 'package:poke_tools/pages/add_pokemon_duo_page.dart';
 import 'package:poke_tools/repositories/areas_repository.dart';
+import 'package:poke_tools/repositories/levelcaps_repository.dart';
 import 'package:poke_tools/repositories/nuzlocke_run_repository.dart';
 import 'package:poke_tools/theme.dart';
 
@@ -91,6 +91,40 @@ class _RunDetailPageState extends State<RunDetailPage> {
               Navigator.pop(context);
             },
             child: const Text('Confirm'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLevelCapsDialog() async {
+    final repo = LevelCapsRepository();
+    final caps = await repo.getLevelCaps(widget.run.game);
+    final textStyle = Theme.of(context).textTheme.bodyLarge;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Level Caps'),
+        content: caps.isEmpty
+            ? const Text('No level caps available.')
+            : SizedBox(
+                width: 300,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: caps.entries
+                      .map((e) => ListTile(
+                            dense: true,
+                            title: Text(e.key, style: textStyle),
+                            trailing: Text('Lv. ${e.value}', style: textStyle),
+                          ))
+                      .toList(),
+                ),
+              ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
           ),
         ],
       ),
@@ -206,6 +240,11 @@ class _RunDetailPageState extends State<RunDetailPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            IconButton(
+                              icon: const Icon(Icons.bar_chart),
+                              tooltip: 'View Level Caps',
+                              onPressed: _showLevelCapsDialog,
+                            ),
                             Text(
                               'Finished:',
                               style: TextStyle(

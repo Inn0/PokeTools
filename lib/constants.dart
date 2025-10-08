@@ -5,4 +5,6 @@ const String NUZLOCKE_TRACKER_PAGE = 'Nuzlocke Tracker';
 const String NUZLOCKE_TRACKER_PAGE_ROUTE = 'nuzlocketracker';
 const String LOCATIONS_PAGE = 'Locations';
 const String LOCATIONS_PAGE_ROUTE = 'locations';
+const String LEVELCAPS_PAGE = "Level Caps";
+const String LEVELCAPS_PAGE_ROUTE = "levelcaps";
 const String MENU = 'Menu';

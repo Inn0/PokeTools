@@ -63,6 +63,7 @@ flutter:
     #   - images/a_dot_ham.jpeg
     assets:
         - assets/areas.json
+        - assets/levelcaps.json
         - assets/pokeball-1.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
